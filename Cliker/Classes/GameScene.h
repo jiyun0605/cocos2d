@@ -17,6 +17,7 @@ USING_NS_CC_EXT;
 using namespace std;
 
 
+
 class GameScene : public cocos2d::Scene,public ScrollViewDelegate
 {
 
@@ -24,14 +25,14 @@ public:
 
 	static const int coinTxtTag = 0;
 	static const int floatingTxtTag = 1;
-	static const int rabbitTag = 2;
+	static const int rabbitTextTag = 2;
 
 
 	int totalCoin = 0;
 	int coinPerSec = 1;
 	int touchCoin = 1;
-
-
+	int rabbitLevel = 1;
+	int catLevel = 0;
 
 
     static cocos2d::Scene* createScene();
@@ -41,9 +42,12 @@ public:
 	virtual bool onTouchBegan(Touch* touch, Event* unused_event);
 	void addCoin(float data);
 	void initUi();
-	bool initScrollView();
+	bool initButtonMenu();
 	void removeFloating();
-	void scrollViewDidScroll(ScrollView *v);
+
+	void rabbitLevelUp();
+	void catLevelUp();
+	void totalCoinUpdate();
     CREATE_FUNC(GameScene);
 };
 
