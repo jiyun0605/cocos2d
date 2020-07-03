@@ -34,17 +34,11 @@ bool GameScene::onTouchBegan(Touch * touch, Event * unused_event)
 		return false;
 	totalCoin += touchCoin;
 
-	auto txt = (Label*)this->getChildByTag(coinTxtTag);
-	char total[(((sizeof totalCoin)*CHAR_BIT) + 2) / 3 + 2];
-	sprintf_s(total, "%d", totalCoin);
-	txt->setString(StringUtils::format(total));
-	
+	totalCoinUpdate();
 
 	
 	char p[(((sizeof touchCoin)*CHAR_BIT) + 2) / 3 + 2];
 	sprintf_s(p, "%d", touchCoin);
-
-
 
 	auto floatingTxt = Label::createWithTTF(p, "fonts/DungGeunMo.ttf", 20);
 	floatingTxt->setPosition(loc);
@@ -74,11 +68,7 @@ void GameScene::addCoin(float data)
 {
 	totalCoin += coinPerSec;
 
-
-	auto txt = (Label*)this->getChildByTag(coinTxtTag);
-	char ntoc[(((sizeof totalCoin) * CHAR_BIT) + 2) / 3 + 2];
-	sprintf_s(ntoc, "%d", totalCoin);
-	txt->setString(StringUtils::format(ntoc));
+	totalCoinUpdate();
 
 }
 void GameScene::initUi()
@@ -105,7 +95,7 @@ void GameScene::initUi()
 	auto coinTxt = Label::createWithTTF(ntoc, "fonts/DungGeunMo.ttf", 20);
 	coinTxt->setTag(coinTxtTag);
 	coinTxt->setColor(Color3B::BLACK);
-	coinTxt->setPosition(Point(70, 770));
+	coinTxt->setPosition(Point(150, 770));
 	this->addChild(coinTxt);
 
 	auto rabbit = Sprite::create("charactor/rabbit/rabbit_1.png");
@@ -125,44 +115,54 @@ void GameScene::initUi()
 }
 bool GameScene::initButtonMenu()
 {
+
 	auto button = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png",CC_CALLBACK_0(GameScene::rabbitLevelUp,this));
 	button->setAnchorPoint(Point(0, 0));
 	button->setPosition(Point(0,0));
-	auto text1 = Label::createWithTTF("토끼 레벨업\n현재레벨 : 1", "fonts/DungGeunMo.ttf", 15);
-	text1->setPosition(Point(80, 40));
+	button->setTag(rabbitButtonTag);
+	auto text1 = Label::createWithTTF("토끼 레벨업\n1레벨", "fonts/DungGeunMo.ttf", 15);
+	text1->setPosition(Point(80, 50));
 	text1->setColor(Color3B::BLACK);
 	text1->setTag(rabbitTextTag);
 	button->addChild(text1);
 
-	auto button2 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::catLevelUp, this));
-	button2->setAnchorPoint(Point(0, 0));
-	button2->setPosition(Point(0, 0));
+	//auto button2 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::catLevelUp, this));
+	//button2->setAnchorPoint(Point(0, 0));
+	//button2->setPosition(Point(0, 0));
+	//auto button3 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
+	//button3->setAnchorPoint(Point(0, 0));
+	//button3->setPosition(Point(0, 0));
 
-	auto button3 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
-	button3->setAnchorPoint(Point(0, 0));
-	button3->setPosition(Point(0, 0));
-
-	auto menu = Menu::create(button,button2,button3, NULL);
+	auto menu = Menu::create(button, NULL);
 	menu->alignItemsVertically();
 	menu->setPosition(Point(50, 120));
 	this->addChild(menu);
+	menu->setTag(menuTag1);
 
-	auto button4 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
+	auto button4 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::catLevelUp, this));
 	button4->setAnchorPoint(Point(0, 0));
 	button4->setPosition(Point(0, 0));
-
-	auto button5 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
-	button5->setAnchorPoint(Point(0, 0));
-	button5->setPosition(Point(0, 0));
-
-	auto button6 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
-	button6->setAnchorPoint(Point(0, 0));
-	button6->setPosition(Point(0, 0));
+	button4->setTag(catButtonTag);
+	auto text4=Label::createWithTTF("토끼 10레벨 이후\n잠금해제", "fonts/DungGeunMo.ttf", 15);
+	text4->setPosition(Point(80, 50));
+	text4->setColor(Color3B::BLACK);
+	text4->setTag(catTextTag);
+	button4->addChild(text4);
 
 
-	auto menu2 = Menu::create(button4, button5, button6, NULL);
+	//auto button5 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
+	//button5->setAnchorPoint(Point(0, 0));
+	//button5->setPosition(Point(0, 0));
+
+	//auto button6 = MenuItemImage::create("ui/button.png", "ui/button2.png", "ui/button2.png", CC_CALLBACK_0(GameScene::rabbitLevelUp, this));
+	//button6->setAnchorPoint(Point(0, 0));
+	//button6->setPosition(Point(0, 0));
+
+
+	auto menu2 = Menu::create(button4, NULL);
 	menu2->alignItemsVertically();
 	menu2->setPosition(Point(250,120));
+	menu2->setTag(menuTag2);
 	this->addChild(menu2);
 
 	return true;
@@ -174,19 +174,25 @@ void GameScene::removeFloating()
 
 void GameScene::rabbitLevelUp()
 {
-	int cost =100*rabbitLevel;
-	if (totalCoin < cost)
+	int cost =80*rabbitLevel;
+	if (totalCoin < cost||rabbitLevel==30)
 		return;
 	totalCoin -= cost;
 	rabbitLevel++;
-	touchCoin += (int)rabbitLevel*5/4;
-
+	touchCoin = (rabbitLevel-1)*2;
 	totalCoinUpdate();
 
-	auto text = (Label*)this->getChildByTag(rabbitTextTag);
-	string str = "토끼 레벨업\n현재레벨 : " + rabbitLevel;
-	//char txt[(((sizeof str)*CHAR_BIT) + 2) / 3 + 2];
+	
+	auto text = (Label*)this->getChildByTag(menuTag1)->getChildByTag(rabbitButtonTag)->getChildByTag(rabbitTextTag);
+	string str;
+	if (rabbitLevel >= 30)
+		str = "토끼 레벨 최대치 달성!";
+	else
+		str="토끼 레벨업\n" + to_string(rabbitLevel) + "레벨";
+	
 	text->setString(str);
+
+
 
 	char p[(((sizeof cost)*CHAR_BIT) + 2) / 3 + 2];
 	sprintf_s(p, "%d", cost);
@@ -216,9 +222,11 @@ void GameScene::rabbitLevelUp()
 
 void GameScene::catLevelUp()
 {
-	int cost = (int)catLevel * 5 / 2;
-	if (rabbitLevel < 10||totalCoin<cost)
+	int cost = (catLevel+1) * 100;
+	if (totalCoin<cost||rabbitLevel<10)
 		return;
+
+	//create cat
 	if (catLevel == 0)
 	{
 		auto cat = Sprite::create("charactor/cat/cat1.png");
@@ -234,9 +242,14 @@ void GameScene::catLevelUp()
 		cat->runAction(rep);
 		this->addChild(cat);
 	}
-
+	catLevel++;
 	totalCoin -= cost;
 	totalCoinUpdate();
+
+
+	auto text = (Label*)this->getChildByTag(menuTag2)->getChildByTag(catButtonTag)->getChildByTag(catTextTag);
+	string str = "고양이 레벨업\n" + to_string(catLevel) + "레벨";
+	text->setString(str);
 
 	char p[(((sizeof cost)*CHAR_BIT) + 2) / 3 + 2];
 	sprintf_s(p, "%d", cost);
@@ -261,8 +274,8 @@ void GameScene::catLevelUp()
 	);
 
 	floatingTxt->runAction(action);
-	catLevel++;
-	coinPerSec += catLevel;
+
+	coinPerSec += catLevel-1;
 }
 
 void GameScene::totalCoinUpdate()

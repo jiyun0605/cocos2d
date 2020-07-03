@@ -26,6 +26,12 @@ public:
 	static const int coinTxtTag = 0;
 	static const int floatingTxtTag = 1;
 	static const int rabbitTextTag = 2;
+	static const int rabbitButtonTag = 3;
+	static const int menuTag1 = 4;
+	static const int catTextTag = 5;
+	static const int catButtonTag = 6;
+	static const int menuTag2 = 7;
+
 
 
 	int totalCoin = 0;
