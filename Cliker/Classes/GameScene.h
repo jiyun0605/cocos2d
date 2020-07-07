@@ -34,7 +34,7 @@ public:
 
 
 
-	int totalCoin = 0;
+	int totalCoin = 100000000;
 	int coinPerSec = 1;
 	int touchCoin = 1;
 	int rabbitLevel = 1;

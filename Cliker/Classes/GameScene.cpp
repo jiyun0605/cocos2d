@@ -186,7 +186,7 @@ void GameScene::rabbitLevelUp()
 	auto text = (Label*)this->getChildByTag(menuTag1)->getChildByTag(rabbitButtonTag)->getChildByTag(rabbitTextTag);
 	string str;
 	if (rabbitLevel >= 30)
-		str = "토끼 레벨 최대치 달성!";
+		str = "\n레벨 최대치 달성!";
 	else
 		str="토끼 레벨업\n" + to_string(rabbitLevel) + "레벨";
 	
@@ -223,7 +223,7 @@ void GameScene::rabbitLevelUp()
 void GameScene::catLevelUp()
 {
 	int cost = (catLevel+1) * 100;
-	if (totalCoin<cost||rabbitLevel<10)
+	if (totalCoin<cost||rabbitLevel<10||catLevel>=15)
 		return;
 
 	//create cat
@@ -248,7 +248,11 @@ void GameScene::catLevelUp()
 
 
 	auto text = (Label*)this->getChildByTag(menuTag2)->getChildByTag(catButtonTag)->getChildByTag(catTextTag);
-	string str = "고양이 레벨업\n" + to_string(catLevel) + "레벨";
+	string str;
+	if (catLevel >= 15)
+		 str = "\n레벨 최대치 달성!";
+	else
+		 str = "고양이 레벨업\n    " + to_string(catLevel) + "레벨";
 	text->setString(str);
 
 	char p[(((sizeof cost)*CHAR_BIT) + 2) / 3 + 2];
